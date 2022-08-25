@@ -3,6 +3,11 @@
 
 int main()
 {
+    /*!
+    @param[in] coef_a  coeff_a - coefficient
+    @param[in] coef_b  coeff_b - coefficient
+    @param[in] coef_c  coeff_c - coefficient
+    */
     double coef_a = 0, coef_b = 0, coef_c = 0;
     double x1 = 0, x2 = 0;
 
