@@ -8,7 +8,7 @@ The programm is divided into three main parts: input, solution, printing the ans
 (Besides, it includes test mode)
 There are a lot of advantages: 
 
-1)There is no need to count the answer on your own if you have this programm and solution will be recieved quickly. Solving square equations will become much easier!
+1)There is no need to count the answer on your own if you have this programm. Solution will be recieved quickly. Solving square equations will become much easier!
 
 2)This programm checks everything. If user writes something wrong like letters or other signs the programm asks to write countable symbols.
 
