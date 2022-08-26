@@ -14,7 +14,7 @@ enum num_of_roots {ZERO , ONE, TWO, INF};
     @brief  This function asks for input correct coefficients
     @detailed Decides whether coefficients are suitable or not
 */
-void Input(double* coef_a, double* coef_b, double* coef_c);
+void INPUTFILE(double* coef_a, double* coef_b, double* coef_c);
 
 /*!
     @brief  This function solves Square Equations
