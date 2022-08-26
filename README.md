@@ -17,7 +17,7 @@ There are a lot of advantages:
 4)There is a great number of useful functions which might be used in other projects.
 
 
-Solve square equations with this programm .
+Solve square equations with SquareSolv .
 
 
 
