@@ -1,113 +1,136 @@
-#include <math.h>
-#include <stdio.h>
+#include "solve_eq.h"
 
-enum num_of_roots {zero , one, two, lots};
-
-void PrintAnswer(int number_of_roots, double* p_x1,  double* p_x2);
-
-/*!
-    @brief  This function solves Lineal Equasions
-    @return Returns number of roots 
-*/
-double SolveLinEq( double b, double c, double* p_x1)
+int  IsEqual(double y, double z)
 {
-    if (b == 0 && c == 0)
-    {
-        return lots;
+    const double EPS = 0.000001;
+    return (fabs(y - z) < EPS);
+}
 
+void CheckPtrs(double* ptr)
+{
+    assert(ptr != NULL);   
+}
+
+void SortRoots(double* p_x1, double* p_x2)
+{
+    CheckPtrs(p_x1);
+    CheckPtrs(p_x2);
+
+    if (*p_x1 > *p_x2)
+    {
+        double temp = *p_x1;
+        *p_x1 = *p_x2;
+        *p_x2 = temp;
     }
-    if (b != 0)
+}
+
+int SolveLinEq( double b, double c, double* p_x1, double* p_x2)
+{
+    CheckPtrs(p_x1);
+    CheckPtrs(p_x2);
+
+    if (IsEqual(b,0) && IsEqual(c,0))
+    {
+        return INF;
+    }
+    if (!IsEqual(b,0))
     {
         *p_x1 = -c/b;
-        return 1;
+        *p_x2 = *p_x1;
+
+        return ONE;
     }
     else
     {
-        return 0;
-    }
-    
-    
+        return ZERO;
+    }   
 }
 
-double CountD(double a, double b, double c)
+double CountD( double a, double b, double c)
 {
     return b * b - a * c * 4;
 }
 
-int SolveSqEqWithoutCoeffB(double a, double c, double* p_x1, double* p_x2)
+int SolveSqEqWithoutCoeffB( double a, double c, double* p_x1, double* p_x2)
 {
+    CheckPtrs(p_x1);
+    CheckPtrs(p_x2);
+
     if(c < 0)
     {
-        *p_x1 = -sqrt(-c/a);
-        *p_x2 =  sqrt(-c/a);
-        return 2;
+        double sqrt_x = sqrt(-c/a);
+        *p_x1 = -sqrt_x;
+        *p_x2 =  sqrt_x;
+        return TWO;
     }
-    else if (c == 0)
+    else if (IsEqual(c,0))
     {
         *p_x1 = 0;
-        return 1;
+        return ONE;
     }
     else 
     {
-        return zero;
+        return ZERO;
     }
 }
 
-int SolveSqEqWithoutCoeffC(double a, double b, double* p_x1, double* p_x2)
+int SolveSqEqWithoutCoeffC( double a, double b, double* p_x1, double* p_x2)
 {
+    CheckPtrs(p_x1);
+    CheckPtrs(p_x2);
+
     *p_x1 = 0;
-    *p_x2 = SolveLinEq(a, b, p_x1);
-    return two;
+    *p_x2 = SolveLinEq(a, b, p_x1, p_x2);
+    return TWO;
 }
 
 /*!
-    @brief  This function solves Square Equasions
+    @brief  This function solves Square Equations
     @return Returns number of roots
 */
-int SolveSqEq(double a, double b, double c, double* p_x1, double* p_x2)
+int SolveSqEq( double a, double b, double c, double* p_x1, double* p_x2)
 {  
-    if (b == 0)
+    CheckPtrs(p_x1);
+    CheckPtrs(p_x2);
+
+    if (IsEqual(b,0))
     {
-        return SolveSqEqWithoutCoeffB(a, c, p_x1, p_x2);
+        return SolveSqEqWithoutCoeffB( a, c, p_x1, p_x2);
     }
-    else if (c == 0)
+    else if (IsEqual(c,0))
     {
-        return SolveSqEqWithoutCoeffC(a, b, p_x1, p_x2);
+        return SolveSqEqWithoutCoeffC( a, b, p_x1, p_x2);
     }
     else
     {
-        double D = CountD(a, b, c);
-        if (D > 0)
+        double D = CountD( a, b, c);
+        if (IsEqual(D,0))
+        {
+            *p_x1 = -b/(a*2);
+            *p_x2 = *p_x1;
+            return ONE;
+        }
+        else if (D > 0)
         {
             double sqrt_D = sqrt(D);
             *p_x1 = (-b + sqrt_D) / (a*2);
             *p_x2 = (-b - sqrt_D) / (a*2);
-            return two;
-        }
-        else if (D == 0)
-        {
-            *p_x1 = -b/(a*2);
-            return one;
+            SortRoots( p_x1, p_x2);
+            return TWO;
         }
         else
         {
-            return zero;
+            return ZERO;
         }
     }
-
 }
 
-/*!
-    @brief  This function solves Square Equasions
-    @detailed Decides whether the function is Lineal or Square 
-    @return Returns number of roots
-*/
 int SolveEq(double a, double b, double c, double* p_x1, double* p_x2)
 {
-    if (a == 0)
+    if (IsEqual(a,0))
     {
-        return SolveLinEq(b, c, p_x1);;
+        return SolveLinEq( b, c, p_x1, p_x2);;
     }
-    return SolveSqEq(a, b, c, p_x1, p_x2);
- 
+    return SolveSqEq( a, b, c, p_x1, p_x2);
 }
+
